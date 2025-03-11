@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -21,6 +22,8 @@ import com.example.service.MessageService;
  public class SocialMediaController {
     @Autowired
     private AccountService accountService;
+    
+    @Autowired
     private MessageService messageService;
 
 
@@ -41,5 +44,15 @@ import com.example.service.MessageService;
     public ResponseEntity<Account> login(@RequestBody Account account) {
         return ResponseEntity.ok()
                 .body(accountService.login(account));
+    }
+
+    /**
+     * Handler for POST localhost:8080/messages
+     */
+    @PostMapping("messages")
+    public ResponseEntity<Message> createMessage(@RequestBody Message message) {
+        messageService.createMessage(message);
+        return ResponseEntity.ok()
+                .body(message);
     }
 }

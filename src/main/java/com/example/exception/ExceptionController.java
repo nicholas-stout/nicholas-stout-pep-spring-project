@@ -24,4 +24,10 @@ public class ExceptionController {
     public String handleUnsuccessfulLogin(AuthenticationException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(MessageCreationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleUnsuccessfulMessageCreation(MessageCreationException e) {
+        return e.getMessage();
+    }
 }
