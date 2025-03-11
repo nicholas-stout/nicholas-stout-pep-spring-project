@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Message;
 import com.example.exception.MessageCreationException;
@@ -12,6 +13,7 @@ import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 
 @Service
+@Transactional
 public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
@@ -33,6 +35,7 @@ public class MessageService {
      * This method queries the database for all messages
      * @return a List of all messages in the database
      */
+    @Transactional(readOnly = true)
     public List<Message> getMessages() {
         return messageRepository.findAll();
     }
@@ -42,8 +45,18 @@ public class MessageService {
      * @param messageId the ID of the message we wish to find
      * @return an Optional representation of the message, if it exists.
      */
+    @Transactional(readOnly = true)
     public Optional<Message> getMessageById(int messageId) {
         return messageRepository.findById(messageId);
+    }
+
+    /**
+     * This method tells the database to delete a specific message
+     * @param messageId the ID of the Message we wish to delete
+     * @return the number of Messages deleted (should be at most 1)
+     */
+    public Integer deleteMessageById(int messageId) {
+        return messageRepository.deleteByMessageId(messageId);
     }
 
 

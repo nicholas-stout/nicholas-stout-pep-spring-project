@@ -2,6 +2,7 @@ package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Account;
 import com.example.exception.AccountRegistrationException;
@@ -10,6 +11,7 @@ import com.example.exception.DuplicateUsernameException;
 import com.example.repository.AccountRepository;
 
 @Service
+@Transactional
 public class AccountService {
     // Account repository that this class will use
     @Autowired
@@ -32,6 +34,7 @@ public class AccountService {
      * @return the logged-in Account, if it exists
      * @throws AuthenticationException thrown if the username or password are incorrect
      */
+    @Transactional(readOnly = true)
     public Account login(Account account) throws AuthenticationException {
         return accountRepository.findByUsernameAndPassword(account.getUsername(), account.getPassword())
                 .orElseThrow(() -> new AuthenticationException("Your username or password are incorrect. Please try again."));

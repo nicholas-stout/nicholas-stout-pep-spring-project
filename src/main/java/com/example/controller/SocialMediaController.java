@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,6 +83,20 @@ import com.example.service.MessageService;
                     .body(optionalMessage.get());
         } else {
             return ResponseEntity.ok().build();
+        }
+    }
+
+    /**
+     * Handler for DELETE localhost:8080/messages{message_id}
+     */
+    @DeleteMapping("messages/{message_id}")
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable int message_id) {
+        Integer messagesDeleted = messageService.deleteMessageById(message_id);
+
+        if (messagesDeleted == 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.ok().body(messagesDeleted);
         }
     }
 }
