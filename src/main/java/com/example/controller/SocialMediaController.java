@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -98,5 +99,15 @@ import com.example.service.MessageService;
         } else {
             return ResponseEntity.ok().body(messagesDeleted);
         }
+    }
+
+    /**
+     * Handler for PATCH localhost:8080/messages/{message_id}
+     */
+    @PatchMapping("messages/{message_id}")
+    public ResponseEntity<Integer> updateMessage(@PathVariable int message_id, @RequestBody Message message) {
+        return ResponseEntity.ok().body(
+                messageService.updateMessage(message_id, message.getMessageText())
+        );
     }
 }

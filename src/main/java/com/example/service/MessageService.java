@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entity.Message;
 import com.example.exception.MessageCreationException;
+import com.example.exception.MessageNotFoundException;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 
@@ -59,6 +60,20 @@ public class MessageService {
         return messageRepository.deleteByMessageId(messageId);
     }
 
+    /**
+     * This method will attempt to update a Message in the database
+     * @param messageId the ID of the Message we wish to update
+     * @param messageText the new text of the Message
+     * @return the number of Messages updated (should only be 1)
+     * @throws MessageNotFoundException thrown if no Message with messageId exists
+     * @throws MessageCreationException thrown if messageText is either empty or mor than 255 characters
+     */
+    public Integer updateMessage(int messageId, String messageText) throws MessageNotFoundException, MessageCreationException {
+        validateMessage(messageId, messageText);
+
+        return messageRepository.updateByMessageIdAndMessageText(messageId, messageText);
+    }
+
 
     /**
      * This method will validate a Message to ensure that it can be added to the database
@@ -92,5 +107,32 @@ public class MessageService {
      */
     private boolean isValidPostedBy(int postedBy) {
         return accountRepository.findById(postedBy).isPresent();
+    }
+
+    /**
+     * This method validates if a Message can be updated, and throws the appropriate exceptions if it cannot
+     * @param messageId the ID of the Message we wish to update
+     * @param messageText the new text of the Message
+     * @throws MessageNotFoundException thrown if no Message with messageId exists
+     * @throws MessageCreationException thrown if the messageText is empty or more than 255 characters
+     */
+    private void validateMessage(int messageId, String messageText) throws MessageNotFoundException, MessageCreationException{
+        if (!messageExists(messageId)) {
+            throw new MessageNotFoundException("The message you're trying to update was not found");
+        }
+
+        if (!isValidMessageText(messageText)) {
+            throw new MessageCreationException("Sorry, we could not update that message " +
+                    "because it is either empty or more than 255 characters.");
+        }
+    }
+
+    /**
+     * This method checks if a Message already exists
+     * @param messageId the ID of the Message we want to check exists
+     * @return true if the message exists, false otherwise
+     */
+    private boolean messageExists(int messageId) {
+        return messageRepository.findById(messageId).isPresent();
     }
 }

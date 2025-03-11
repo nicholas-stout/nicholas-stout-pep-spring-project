@@ -30,4 +30,10 @@ public class ExceptionController {
     public String handleUnsuccessfulMessageCreation(MessageCreationException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(MessageNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleMessageNotFound(MessageNotFoundException e) {
+        return e.getMessage();
+    }
 }
