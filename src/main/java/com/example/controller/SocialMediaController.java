@@ -110,4 +110,12 @@ import com.example.service.MessageService;
                 messageService.updateMessage(message_id, message.getMessageText())
         );
     }
+
+    /**
+     * Handler for GET localhost:8080/accounts/{account_id}/messages
+     */
+    @GetMapping("accounts/{account_id}/messages")
+    public ResponseEntity<List<Message>> getMessagesFromAccount(@PathVariable int account_id) {
+        return ResponseEntity.ok().body(messageService.getAllMessagesFromUser(account_id));
+    }
 }

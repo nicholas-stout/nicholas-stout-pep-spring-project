@@ -74,6 +74,16 @@ public class MessageService {
         return messageRepository.updateByMessageIdAndMessageText(messageId, messageText);
     }
 
+    /**
+     * This method queries the database for all Messages posted by a specific Account
+     * @param accountId the ID of the Account whose Messages we wish to see
+     * @return a List of all Messages posted by accountId
+     */
+    @Transactional(readOnly = true)
+    public List<Message> getAllMessagesFromUser(int accountId) {
+        return messageRepository.findAllByPostedBy(accountId);
+    }
+
 
     /**
      * This method will validate a Message to ensure that it can be added to the database
