@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,15 @@ public class MessageService {
      */
     public List<Message> getMessages() {
         return messageRepository.findAll();
+    }
+
+    /**
+     * This method queries the database for a specific message and returns it
+     * @param messageId the ID of the message we wish to find
+     * @return an Optional representation of the message, if it exists.
+     */
+    public Optional<Message> getMessageById(int messageId) {
+        return messageRepository.findById(messageId);
     }
 
 

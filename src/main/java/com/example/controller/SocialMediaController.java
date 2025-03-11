@@ -1,11 +1,13 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,5 +68,20 @@ import com.example.service.MessageService;
     public ResponseEntity<List<Message>> getMessages() {
         return ResponseEntity.ok()
                 .body(messageService.getMessages());
+    }
+
+    /**
+     * Handler for GET localhost:8080/messages/{message_id}
+     */
+    @GetMapping("messages/{message_id}")
+    public ResponseEntity<Message> getMessageById(@PathVariable int message_id) {
+        Optional<Message> optionalMessage = messageService.getMessageById(message_id);
+
+        if (optionalMessage.isPresent()) {
+            return ResponseEntity.ok()
+                    .body(optionalMessage.get());
+        } else {
+            return ResponseEntity.ok().build();
+        }
     }
 }
