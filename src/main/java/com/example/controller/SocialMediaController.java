@@ -33,4 +33,13 @@ import com.example.service.MessageService;
         return ResponseEntity.ok()
                 .body(account);
     }
+
+    /**
+     * Handler for POST localhost:8080/login
+     */
+    @PostMapping("login")
+    public ResponseEntity<Account> login(@RequestBody Account account) {
+        return ResponseEntity.ok()
+                .body(accountService.login(account));
+    }
 }

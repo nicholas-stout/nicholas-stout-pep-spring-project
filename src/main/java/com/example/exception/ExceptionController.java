@@ -18,4 +18,10 @@ public class ExceptionController {
     public String handleUnsuccessfulAccountRegistration(AccountRegistrationException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String handleUnsuccessfulLogin(AuthenticationException e) {
+        return e.getMessage();
+    }
 }
